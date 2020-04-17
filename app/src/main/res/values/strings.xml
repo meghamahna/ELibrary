@@ -3,4 +3,6 @@
 
     <string name="drawerOpen">drawerOpen</string>
     <string name="drawerClose">drawerClose</string>
+
+    <string name="API_KEY">trnsl.1.1.20200416T020947Z.137964f8779f7e05.f421af73da3c88ecf8e7ee228fe95fa20a8945f1</string>
 </resources>

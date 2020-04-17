@@ -2,45 +2,54 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@drawable/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <EditText
+        android:ems="10"
+        android:background="@null"
         android:id="@+id/enterWord"
-        android:layout_width="match_parent"
+        android:layout_width="323dp"
         android:layout_height="120dp"
         android:hint="Write Word here. . ."
+        android:textColor="#FDfd88"
+        android:textColorHint="#fff"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.107"/>
+        app:layout_constraintVertical_bias="0.107" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="219dp"
+        android:layout_width="200dp"
         android:layout_height="76dp"
+        android:background="@drawable/button_shape"
         android:onClick="sendRequestOnClick"
         android:text="Find"
-        android:textSize="20dp"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.428" />
+        app:layout_constraintVertical_bias="0.389" />
 
     <TextView
         android:id="@+id/showDef"
         android:layout_width="323dp"
         android:layout_height="137dp"
         android:hint="Meaning. . . "
-        android:text="  Definition"
+        android:textColor="#FDfd88"
+        android:textColorHint="#fff"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.781" />
+        app:layout_constraintVertical_bias="0.668" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
