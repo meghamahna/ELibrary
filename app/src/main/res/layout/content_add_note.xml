@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@drawable/bg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -19,10 +19,11 @@
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:gravity="start|top"
+        android:textColorHint="#FFFFFF"
         android:hint="Write your note here!"
         android:inputType="textMultiLine"
-        android:textColor="#0C0C0C"
-       app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#FDFD77"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

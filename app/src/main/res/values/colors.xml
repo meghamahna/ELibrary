@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
 
     <color name="bright_color">#014350</color>
     <color name="light_color">#D4EFF4</color>
     <color name="white_color">#ffffff</color>
 
-    <color name="yellow">#FFE66E</color>
-    <color name="lightGreen">#a0ef9a</color>
-    <color name="pink">#ffaedf</color>
-    <color name="lightPurple">#d7afff</color>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#0e94b2</color>
+
+
+<!--    <color name="light_color">#2ce0f4</color>-->
+<!--    <color name="bright_color">#13547a</color>-->
+
+
+    <color name="yellow">#83a4ec</color>
+    <color name="lightGreen">#1c66a0</color>
+    <color name="pink">#138daf</color>
+    <color name="lightPurple">#3d72e6</color>
     <color name="skyblue">#9edfff</color>
-    <color name="gray">#e0e0e0</color>
-    <color name="red">#DB4848</color>
+    <color name="gray">#31a5aa</color>
+    <color name="red">#5e9692</color>
     <color name="blue">#8C9EFF</color>
-    <color name="greenlight">#96D162</color>
-    <color name="notgreen">#EA80FC</color>
+    <color name="greenlight">#41f7c4</color>
+    <color name="notgreen">#278093</color>
 
 
 </resources>
