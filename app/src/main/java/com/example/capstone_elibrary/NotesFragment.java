@@ -29,6 +29,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -43,11 +45,14 @@ public class NotesFragment extends Fragment {
     RecyclerView noteLists;
     FirebaseFirestore fStore;
     FirestoreRecyclerAdapter<NoteClass, NoteViewHolder> noteAdapter;
+    FirebaseUser user;
+    FirebaseAuth fAuth;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.notes_frag, container, false);
 
 
@@ -57,8 +62,10 @@ public class NotesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         noteLists = (RecyclerView) getView().findViewById(R.id.notelist);
         fStore = FirebaseFirestore.getInstance();
+        fAuth=FirebaseAuth.getInstance();
+        user=fAuth.getCurrentUser();
 
-        Query query = fStore.collection("notes").orderBy("title",Query.Direction.DESCENDING);
+        Query query = fStore.collection("notes").document(user.getUid()).collection("myNotes").orderBy("title",Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<NoteClass> allNotes = new FirestoreRecyclerOptions.Builder<NoteClass>()
                 .setQuery( query,NoteClass.class)
                 .build();
@@ -149,8 +156,8 @@ public class NotesFragment extends Fragment {
 
 
         drawerLayout = (DrawerLayout)getView().findViewById(R.id.drawer);
-        Toolbar toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        Toolbar toolbar =  getView().findViewById(R.id.toolbar);
+
 
 
         noteLists.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
@@ -166,7 +173,7 @@ public class NotesFragment extends Fragment {
         });
     }
 
-//    public boolean onCreateOptionsMenu(Menu menu) {
+//    public void onCreateOptionsMenu(Menu menu) {
 //        MenuInflater inflater = getActivity().getMenuInflater();
 //        inflater.inflate(R.menu.menu_options,menu);
 //        return super.onCreateOptionsMenu(menu);
@@ -175,6 +182,7 @@ public class NotesFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_options, menu);
+//        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

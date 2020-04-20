@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -28,6 +30,8 @@ public class AddNote extends AppCompatActivity {
     FirebaseFirestore fstore;
     EditText noteTitle,noteContent;
     ProgressBar progressBarsave;
+    FirebaseUser user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,8 @@ public class AddNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         fstore = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         noteContent = findViewById(R.id.addnotecontent);
         noteTitle= findViewById(R.id.addNoteTitle);
         progressBarsave= findViewById(R.id.progressBarsave);
@@ -58,7 +64,7 @@ public class AddNote extends AppCompatActivity {
                 progressBarsave.setVisibility(View.VISIBLE);
                 //save note
 
-                DocumentReference docref = fstore.collection("notes").document();
+                DocumentReference docref = fstore.collection("notes").document(user.getUid()).collection("myNotes").document();
                 Map<String,Object> note = new HashMap<>();
                 note.put("title",ntitle);
                 note.put("content",ncontent);
