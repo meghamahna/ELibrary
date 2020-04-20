@@ -46,6 +46,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
+    RelativeLayout layout;
 
     private static final String SORTORDER_KEY = "sortorder";
     private static final String LASTSHOW_STATUS_KEY = "LastshowStatus";
@@ -110,7 +112,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
+        layout = findViewById(R.id.hideLayout);
 
+        layout.setVisibility(View.VISIBLE);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -168,16 +172,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.home){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
             Toast.makeText(MainActivity.this, "Home Page selected", Toast.LENGTH_SHORT).show();
         }
         else if (menuItem.getItemId() == R.id.dictionary) {
+            layout.setVisibility(View.GONE);
+            toolbar.getMenu().clear();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DictionaryFragment()).commit();
             Toast.makeText(MainActivity.this, "Dictionary selected", Toast.LENGTH_SHORT).show();
         } else if (menuItem.getItemId() == R.id.translator) {
+            layout.setVisibility(View.GONE);
+            toolbar.getMenu().clear();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TranslatorFragment()).commit();
             Toast.makeText(MainActivity.this, "Translator selected", Toast.LENGTH_SHORT).show();
         } else if (menuItem.getItemId() == R.id.notes){
+            layout.setVisibility(View.GONE);
+            toolbar.getMenu().clear();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotesFragment()).commit();
             Toast.makeText(MainActivity.this, "Notes  selected", Toast.LENGTH_SHORT).show();
         }
@@ -383,14 +395,89 @@ protected void onNewIntent(Intent intent) {
     }
 
 
+
     private void updateViewTimes() {
         bookAdapter.notifyItemRangeChanged(0, bookAdapter.getItemCount());
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option, menu);
+
+        BookSortOrder sortorder = getSortOrder();
+
+        switch (sortorder) {
+            case Default:
+                menu.findItem(R.id.menu_sort_default).setChecked(true);
+                break;
+            case Author:
+                menu.findItem(R.id.menu_sort_author).setChecked(true);
+                break;
+            case Title:
+                menu.findItem(R.id.menu_sort_title).setChecked(true);
+                break;
+            case Added:
+                menu.findItem(R.id.menu_sort_added).setChecked(true);
+                break;
+        }
+
+//        switch (data.getInt(STARTWITH_KEY, STARTLASTREAD)) {
+//            case STARTALL:
+//                menu.findItem(R.id.menu_start_all_books).setChecked(true);
+//                break;
+//            case STARTOPEN:
+//                menu.findItem(R.id.menu_start_open_books).setChecked(true);
+//                break;
+//            case STARTLASTREAD:
+//                menu.findItem(R.id.menu_start_last_read).setChecked(true);
+//                break;
+//        }
+
+        return true;
+    }
 
 
     private MenuItem enableScrollMenu;
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //Log.d("Booky", "onPrepareOptionsMenu called, showingSearch=" + showingSearch);
+        super.onPrepareOptionsMenu(menu);
+
+        menu.findItem(R.id.menu_add).setVisible(!showingSearch);
+        menu.findItem(R.id.menu_add_dir).setVisible(!showingSearch);
+        menu.findItem(R.id.menu_get_books).setVisible(!showingSearch);
+        menu.findItem(R.id.menu_sort).setVisible(!showingSearch);
+
+//        MenuItem screenPaging = menu.findItem(R.id.menu_enable_screen_paging);
+//        screenPaging.setChecked(data.getBoolean(ENABLE_SCREEN_PAGE_KEY, true));
+//
+//        enableScrollMenu = menu.findItem(R.id.menu_enable_scroll);
+//        enableScrollMenu.setChecked(data.getBoolean(ENABLE_DRAG_SCROLL_KEY, true));
+//        enableScrollMenu.setEnabled(screenPaging.isChecked());
+
+        switch (showStatus) {
+            case BookDb.STATUS_ANY:
+                menu.findItem(R.id.menu_all_books).setChecked(true);
+                break;
+            case BookDb.STATUS_DONE:
+                menu.findItem(R.id.menu_completed_books).setChecked(true);
+                break;
+            case BookDb.STATUS_LATER:
+                menu.findItem(R.id.menu_later_books).setChecked(true);
+                break;
+            case BookDb.STATUS_NONE:
+                menu.findItem(R.id.menu_unopen_books).setChecked(true);
+                break;
+            case BookDb.STATUS_STARTED:
+                menu.findItem(R.id.menu_open_books).setChecked(true);
+                break;
+        }
+
+        return true;
+    }
 
 
 
