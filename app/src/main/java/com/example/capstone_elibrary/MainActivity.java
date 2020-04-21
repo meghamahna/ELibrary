@@ -28,6 +28,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -61,6 +62,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawerLayout;
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
     RelativeLayout layout;
+    AlertDialog.Builder alertDialog ;
 
     private static final String SORTORDER_KEY = "sortorder";
     private static final String LASTSHOW_STATUS_KEY = "LastshowStatus";
@@ -105,8 +109,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        showAlert();
+
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -1102,6 +1111,29 @@ protected void onNewIntent(Intent intent) {
                         break;
                 }
             }
+        }
+    }
+
+    public void showAlert(){
+
+        alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Welcome to E-library");
+//            alertDialog.setIcon(R.drawable.ic_launcher);
+        alertDialog.setMessage("Go for menu options to add books");
+
+        final SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);//this==context
+        if(!prefs.contains("fTime")){
+            //Other dialog code
+            alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("fTime",true);
+                    editor.commit();
+                    //more code....
+                }
+            });
+            alertDialog.show();
         }
     }
 
