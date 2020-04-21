@@ -52,7 +52,7 @@ public class NotesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(false);
         return inflater.inflate(R.layout.notes_frag, container, false);
 
 
