@@ -53,6 +53,8 @@ import android.widget.Toast;
 
 import com.example.capstone_elibrary.Book.Book;
 import com.example.capstone_elibrary.Book.BookMetadata;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle toggle;
     RelativeLayout layout;
     AlertDialog.Builder alertDialog ;
+
+    private GoogleSignInClient mGoogleSignInClient;
 
     private static final String SORTORDER_KEY = "sortorder";
     private static final String LASTSHOW_STATUS_KEY = "LastshowStatus";
@@ -115,6 +119,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         showAlert();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolBar);
@@ -205,7 +214,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (menuItem.getItemId() == R.id.logout) {
 
             Toast.makeText(MainActivity.this, "You have successfully Logged out", Toast.LENGTH_SHORT).show();
-            FirebaseAuth.getInstance().signOut();
+
+            if (mGoogleSignInClient != null){
+                mGoogleSignInClient.signOut();
+            }
+
+            else{
+                FirebaseAuth.getInstance().signOut();
+            }
+
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             finish();
 
@@ -432,17 +449,6 @@ protected void onNewIntent(Intent intent) {
                 break;
         }
 
-//        switch (data.getInt(STARTWITH_KEY, STARTLASTREAD)) {
-//            case STARTALL:
-//                menu.findItem(R.id.menu_start_all_books).setChecked(true);
-//                break;
-//            case STARTOPEN:
-//                menu.findItem(R.id.menu_start_open_books).setChecked(true);
-//                break;
-//            case STARTLASTREAD:
-//                menu.findItem(R.id.menu_start_last_read).setChecked(true);
-//                break;
-//        }
 
         return true;
     }
@@ -460,12 +466,6 @@ protected void onNewIntent(Intent intent) {
         menu.findItem(R.id.menu_get_books).setVisible(!showingSearch);
         menu.findItem(R.id.menu_sort).setVisible(!showingSearch);
 
-//        MenuItem screenPaging = menu.findItem(R.id.menu_enable_screen_paging);
-//        screenPaging.setChecked(data.getBoolean(ENABLE_SCREEN_PAGE_KEY, true));
-//
-//        enableScrollMenu = menu.findItem(R.id.menu_enable_scroll);
-//        enableScrollMenu.setChecked(data.getBoolean(ENABLE_DRAG_SCROLL_KEY, true));
-//        enableScrollMenu.setEnabled(screenPaging.isChecked());
 
         switch (showStatus) {
             case BookDb.STATUS_ANY:
